@@ -24,9 +24,8 @@ function App() {
   };
   const likePost = (postId, commentId) => {
     let updatedPosts;
-    const currentPostIndex = posts.findIndex((post) => post.id === postId);
-    let currentPost = posts[currentPostIndex];
     if (commentId) {
+      const currentPost = posts.find((post) => post.id === postId);
       const updatedComments = updateArrayObj(
         currentPost.comments,
         commentId,
@@ -34,9 +33,7 @@ function App() {
         "likes"
       );
 
-      updatedPosts = updateArrayObj(posts, postId, {
-        comments: updatedComments,
-      });
+      updatedPosts = updateArrayObj(posts, postId, { comments: updatedComments });
     } else {
       updatedPosts = updateArrayObj(posts, postId, { likes: 1 }, "likes");
     }
