@@ -7,37 +7,32 @@ function App() {
   const [posts, setPosts] = useState(mockPosts);
 
   const addPost = (post) => setPosts([post, ...posts]);
-  const likePost = (postId, commentId) => {
-    const currentPostIndex = posts.findIndex((post) => post.id === postId);
-    let currentPost = posts[currentPostIndex];
-    if (commentId) {
-      const currentCommentIndex = currentPost.comments.findIndex(
-        (comment) => comment.id === commentId,
-      );
-      const currentComment = currentPost.comments[currentCommentIndex];
-      const updatedComment = {
-        ...currentComment,
-        likes: currentComment.likes + 1,
-      };
+  const updateArrayObj = (arr, id, changes, key) => {
+    const currentIndex = arr.findIndex((item) => item.id === id);
+    const currentItem = arr[currentIndex];
 
-      const updatedComments = [
-        ...currentPost.comments.slice(0, currentCommentIndex),
-        updatedComment,
-        ...currentPost.comments.slice(currentCommentIndex + 1),
-      ];
-      currentPost = { ...currentPost, comments: updatedComments };
-    }
-
-    const updatedPost = {
-      ...currentPost,
-      likes: commentId ? currentPost.likes : currentPost.likes + 1,
+    const updatedItem = {
+      ...currentItem,
+      ...(key ? { [key]: currentItem[key] + changes[key] } : changes),
     };
 
-    const updatedPosts = [
-      ...posts.slice(0, currentPostIndex),
-      updatedPost,
-      ...posts.slice(currentPostIndex + 1),
+    const updatedItems = [
+      ...arr.slice(0, currentIndex),
+      updatedItem,
+      ...arr.slice(currentIndex + 1),
     ];
+
+    return updatedItems;
+  };
+  const likePost = (postId, commentId) => {
+    let updatedPosts;
+    if (commentId) {
+      const currentPost = posts.find((post) => post.id === postId);
+      const updatedComments = updateArrayObj(currentPost.comments, commentId, { likes: 1 }, 'likes');
+      updatedPosts = updateArrayObj(posts, postId, { comments: updatedComments })
+    } else {
+      updatedPosts = updateArrayObj(posts, postId, { likes: 1 }, 'likes')
+    }
     setPosts(updatedPosts);
   };
   return (
