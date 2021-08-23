@@ -8,7 +8,9 @@ export default function PostForm({ addPost }) {
   const onSubmit = (e) => {
     e.preventDefault();
     console.log("Post will be added!");
-    addPost({ title, content, owner: "Anonymous" });
+    addPost({ id: Math.floor(Math.random() * 9999) ,title, content, owner: "Anonymous", likes: 0 });
+    setTitle('');
+    setContent('');
   };
   return (
     <form className="flex column form center" onSubmit={onSubmit}>

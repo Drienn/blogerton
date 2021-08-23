@@ -1,7 +1,10 @@
 const mockPosts = [
-  { title: "First Post", 
+  { 
+  id: 1,
+  title: "First Post", 
   content: "This is the content",
-  owner: "Person"
+  owner: "Person",
+  likes: 0,
 }
 ]
 
