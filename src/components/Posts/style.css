@@ -1,0 +1,8 @@
+.list{
+
+}
+
+.list-item{
+  list-style: none;
+  border: 1px solid black;
+}

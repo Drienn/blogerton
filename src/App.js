@@ -1,23 +1,17 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from 'react'
+import { PostForm, Posts } from "./components";
+import "./App.css";
+import { mockPosts } from './mocks'
 
 function App() {
+  const [ posts, setPosts ] = useState(mockPosts)
+  const addPost = post => setPosts([post, ...posts]);
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Blogerton</h1>
+      <div>Welcome to blogerton</div>
+      <PostForm addPost={addPost}/>
+      <Posts posts={posts}/>
     </div>
   );
 }
