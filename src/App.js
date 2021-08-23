@@ -7,17 +7,37 @@ function App() {
   const [posts, setPosts] = useState(mockPosts);
 
   const addPost = (post) => setPosts([post, ...posts]);
-  const likePost = (id) => {
-    const currentIndex = posts.findIndex((post) => post.id === id);
+  const likePost = (postId, commentId) => {
+    const currentPostIndex = posts.findIndex((post) => post.id === postId);
+    let currentPost = posts[currentPostIndex];
+    if (commentId) {
+      const currentCommentIndex = currentPost.comments.findIndex(
+        (comment) => comment.id === commentId,
+      );
+      const currentComment = currentPost.comments[currentCommentIndex];
+      const updatedComment = {
+        ...currentComment,
+        likes: currentComment.likes + 1,
+      };
+
+      const updatedComments = [
+        ...currentPost.comments.slice(0, currentCommentIndex),
+        updatedComment,
+        ...currentPost.comments.slice(currentCommentIndex + 1),
+      ];
+      currentPost = { ...currentPost, comments: updatedComments };
+    }
+
     const updatedPost = {
-      ...posts[currentIndex],
-      likes: posts[currentIndex].likes + 1,
+      ...currentPost,
+      likes: commentId ? currentPost.likes : currentPost.likes + 1,
     };
+
     const updatedPosts = [
-      ...posts.slice(0, currentIndex),
+      ...posts.slice(0, currentPostIndex),
       updatedPost,
-      ...posts.slice(currentIndex + 1),
-    ]
+      ...posts.slice(currentPostIndex + 1),
+    ];
     setPosts(updatedPosts);
   };
   return (
@@ -25,7 +45,7 @@ function App() {
       <h1>Blogerton!</h1>
       <div>Welcome to Blogerton</div>
       <PostForm addPost={addPost} />
-      <Posts posts={posts} likePost={likePost}/>
+      <Posts posts={posts} likePost={likePost} />
     </div>
   );
 }

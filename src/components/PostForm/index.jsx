@@ -8,7 +8,14 @@ export default function PostForm({ addPost }) {
   const onSubmit = (e) => {
     e.preventDefault();
     console.log('Post will be added!');
-    addPost({ id: Math.floor(Math.random() * 9999), title, content, owner: 'Anonymous', likes: 0 });
+    addPost({
+      id: Math.floor(Math.random() * 9999),
+      title,
+      content,
+      owner: 'Anonymous',
+      likes: 0,
+      comments: [],
+    });
     setTitle('');
     setContent('');
   };
