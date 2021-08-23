@@ -6,36 +6,43 @@ import { mockPosts } from "./mocks";
 function App() {
   const [posts, setPosts] = useState(mockPosts);
   const addPost = (post) => setPosts([post, ...posts]);
+  const updateArrayObj = (arr, id, changes, key) => {
+    const currentIndex = arr.findIndex((item) => item.id === id);
+    const currentItem = arr[currentIndex];
+
+    const updatedItem = {
+      ...currentItem,
+      ...(key ? { [key]: currentItem[key] + changes[key] } : changes),
+    };
+
+    const updatedItems = [
+      ...arr.slice(0, currentIndex),
+      updatedItem,
+      ...arr.slice(currentIndex + 1),
+    ];
+    return updatedItems;
+  };
   const likePost = (postId, commentId) => {
+    let updatedPosts;
     const currentPostIndex = posts.findIndex((post) => post.id === postId);
     let currentPost = posts[currentPostIndex];
     if (commentId) {
-      const currentCommentIndex = currentPost.comments.findIndex(
-        (comment) => comment.id === commentId
+      const updatedComments = updateArrayObj(
+        currentPost.comments,
+        commentId,
+        { likes: 1 },
+        "likes"
       );
-      const currentComment = currentPost.comments[currentCommentIndex];
-      const updatedComment = {
-        ...currentComment,
-        likes: currentComment.likes + 1,
-      };
-      const updatedComments = [
-        ...currentPost.slice(0, currentCommentIndex),
-        updatedComment,
-        ...currentPost.slice(currentCommentIndex + 1),
-      ];
-      currentPost = {...currentPost, comments: updatedComments}
+
+      updatedPosts = updateArrayObj(posts, postId, {
+        comments: updatedComments,
+      });
+    } else {
+      updatedPosts = updateArrayObj(posts, postId, { likes: 1 }, "likes");
     }
-    const updatedPost = {
-      ...currentPost,
-      likes: commentId ? currentPost.likes : currentPost.likes + 1,
-    };
-    const updatedPosts = [
-      ...posts.slice(0, currentPostIndex),
-      updatedPost,
-      ...posts.slice(currentPostIndex + 1),
-    ];
     setPosts(updatedPosts);
   };
+
   return (
     <div className="App">
       <h1>Blogerton</h1>

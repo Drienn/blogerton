@@ -1,8 +1,10 @@
 import { useState } from "react";
+import PostForm from '../PostForm'
 import './style.css';
 
 export default function Post({ post, likePost, type = "post" }) {
   const [showComments, setShowComments] = useState(false);
+  const [showAddComment, setShowAddComment] = useState("")
   const comments = post.comments.map((comment) => (
     <Post post={comment} likePost={() => likePost(post.id, comment.id)} type="comment" />
   ));
@@ -20,6 +22,11 @@ export default function Post({ post, likePost, type = "post" }) {
       <br />
       {type === "post" && post.comments.length > 0 ? (
         <>
+
+          <button type="button" onClick={() => setShowAddComment(!showAddComment)}>
+            Add Comment
+          </button>
+          { showAddComment && <PostForm type="comment" />}
           <button type="button" onClick={() => setShowComments(!showComments)}>
             Show Comments
           </button>

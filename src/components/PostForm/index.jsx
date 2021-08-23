@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./style.css";
 
-export default function PostForm({ addPost }) {
+export default function PostForm({ addPost, type = "post" }) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
