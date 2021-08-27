@@ -2,28 +2,12 @@ import { useState } from 'react';
 import { PostForm, Posts } from './components';
 import './App.css';
 import { mockPosts } from './mocks';
+import { updateArrayObj } from './utils';
 
 function App() {
   const [posts, setPosts] = useState(mockPosts);
 
   const addPost = (post) => setPosts([post, ...posts]);
-  const updateArrayObj = (arr, id, changes, key) => {
-    const currentIndex = arr.findIndex((item) => item.id === id);
-    const currentItem = arr[currentIndex];
-
-    const updatedItem = {
-      ...currentItem,
-      ...(key ? { [key]: currentItem[key] + changes[key] } : changes),
-    };
-
-    const updatedItems = [
-      ...arr.slice(0, currentIndex),
-      updatedItem,
-      ...arr.slice(currentIndex + 1),
-    ];
-
-    return updatedItems;
-  };
   const likePost = (postId, commentId) => {
     let updatedPosts;
     if (commentId) {
